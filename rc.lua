@@ -106,7 +106,7 @@ local themes = {
 }
 
 -- choose your theme here
-local chosen_theme = themes[6]
+local chosen_theme = themes[4]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
@@ -1160,3 +1160,4 @@ awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 awful.spawn.with_shell("picom -b --config  $HOME/.config/awesome/picom.conf")
 --awful.spawn.with_shell("nitrogen --restore")
 --awful.spawn.with_shell("killall conky")
+awful.spawn.with_shell("nm-applet")
