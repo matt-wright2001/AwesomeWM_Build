@@ -1,13 +1,7 @@
 --[[
 
-     Awesome WM configuration template
-     https://github.com/awesomeWM
-
-     Freedesktop : https://github.com/lcpz/awesome-freedesktop
-
-     Copycats themes : https://github.com/lcpz/awesome-copycats
-
-     lain : https://github.com/lcpz/lain
+  Awesome Window Manager Configuration File
+  rc.lua
 
 --]]
 
@@ -106,7 +100,7 @@ local themes = {
 }
 
 -- choose your theme here
-local chosen_theme = themes[4]
+local chosen_theme = themes[2]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
@@ -120,9 +114,9 @@ local modkey1      = "Control"
 --change these variables if you want
 local browser1          = "firefox"
 local browser2          = "firefox"
-local browser3          = "firefox"
+local browser3          = "chromium -no-default-browser-check"
 local editor            = os.getenv("EDITOR") or "nvim"
-local editorgui         = "code"
+local editorgui         = "emacs"
 local filemanager       = "nemo"
 local mailclient        = "evolution"
 local mediaplayer       = "spotify"
@@ -131,7 +125,9 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒" }
+
+awful.util.tagnames = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
+--awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒" }
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 --awful.util.tagnames = { "⌘", "♐", "⌥", "ℵ" }
 --awful.util.tagnames = { "www", "edit", "gimp", "inkscape", "music" }
@@ -140,7 +136,7 @@ awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑",
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.floating,
+    --awful.layout.suit.floating,
     awful.layout.suit.tile.left,
     --awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
@@ -151,7 +147,7 @@ awful.layout.layouts = {
     --awful.layout.suit.max,
     --awful.layout.suit.max.fullscreen,
     --awful.layout.suit.magnifier,
-    --awful.layout.suit.corner.nw,
+    awful.layout.suit.corner.nw,
     --awful.layout.suit.corner.ne,
     --awful.layout.suit.corner.sw,
     --awful.layout.suit.corner.se,
@@ -294,6 +290,7 @@ awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s)
 
 
 -- {{{ Mouse bindings
+-- 
 root.buttons(my_table.join(
     awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
@@ -344,7 +341,7 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "F10", function () awful.util.spawn( mediaplayer ) end,
         {description = mediaplayer , group = "function keys" }),
     awful.key({ modkey }, "F11", function () awful.util.spawn( "rofi -theme-str 'window {width: 100%;height: 100%;}' -show drun" ) end,
-        {description = "rofi fullsacreen" , group = "function keys" }),
+        {description = "rofi fullscreen" , group = "function keys" }),
     awful.key({ modkey }, "F12", function () awful.util.spawn( "rofi -show drun" ) end,
         {description = "rofi" , group = "function keys" }),
 
@@ -355,7 +352,7 @@ globalkeys = my_table.join(
         {description = "conky killall", group = "super"}),
     awful.key({ modkey }, "e", function () awful.util.spawn( editorgui ) end,
         {description = "run gui editor", group = "super"}),
-    awful.key({ modkey }, "h", function () awful.util.spawn( "urxvt -T 'htop task manager' -e htop" ) end,
+    awful.key({ modkey, altkey }, "h", function () awful.util.spawn( "alacritty -e htop" ) end,
         {description = "htop", group = "super"}),
     awful.key({ modkey }, "r", function () awful.util.spawn( "rofi-theme-selector" ) end,
         {description = "rofi theme selector", group = "super"}),
@@ -369,10 +366,6 @@ globalkeys = my_table.join(
       {description = "exit", group = "hotkeys"}),
     awful.key({ modkey }, "Escape", function () awful.util.spawn( "xkill" ) end,
         {description = "Kill proces", group = "hotkeys"}),
-    awful.key({ modkey }, "n", function () awful.spawn.with_shell("nitrogen --restore" ) end,
-    	{description = "restore wallpaper", group = "super"}),
-    awful.key({ modkey }, "f", function () awful.util.spawn( "firefox") end,
-    	{description = "firefox", group = "super"}), 
 
     -- super + shift + ...
     awful.key({ modkey, "Shift"   }, "Return", function() awful.util.spawn( filemanager ) end),
@@ -512,6 +505,7 @@ globalkeys = my_table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
+
 
     -- By direction client focus
     awful.key({ modkey }, "j",
@@ -1027,7 +1021,6 @@ awful.rules.rules = {
     { rule = { class = "Xfce4-settings-manager" },
           properties = { floating = false } },
 
-
     -- Floating clients.
     { rule_any = {
         instance = {
@@ -1156,8 +1149,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- Autostart applications
-awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 awful.spawn.with_shell("picom -b --config  $HOME/.config/awesome/picom.conf")
---awful.spawn.with_shell("nitrogen --restore")
---awful.spawn.with_shell("killall conky")
-awful.spawn.with_shell("nm-applet")
+awful.spawn.with_shell("nitrogen --restore")
